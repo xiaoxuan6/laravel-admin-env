@@ -12,7 +12,7 @@ env extension for laravel-admin
 
 ## Installation
 
-    1、composer require james.xue/env
+    1、composer require james.xue/laravel-admin-env
     2、php artisan admin:import env
 
 ## Configuration
