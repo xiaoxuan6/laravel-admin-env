@@ -1,9 +1,9 @@
 {
-    "name": "james.xue/env",
+    "name": "james.xue/laravel-admin-env",
     "description": "laravel-admin env管理",
     "type": "library",
     "keywords": ["laravel-admin", "extension", "env"],
-    "homepage": "https://github.com/xiaoxuan6/env.git",
+    "homepage": "https://github.com/xiaoxuan6/laravel-admin-env",
     "license": "MIT",
     "authors": [
         {
