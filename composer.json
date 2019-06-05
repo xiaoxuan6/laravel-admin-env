@@ -1,0 +1,34 @@
+{
+    "name": "james.xue/env",
+    "description": "laravel-admin env管理",
+    "type": "library",
+    "keywords": ["laravel-admin", "extension", "env"],
+    "homepage": "https://github.com/xiaoxuan6/env.git",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "james.xue",
+            "email": "1527736751@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "encore/laravel-admin": "~1.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "James\\Env\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "James\\Env\\EnvServiceProvider"
+            ]
+
+        }
+    }
+}
