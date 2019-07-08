@@ -90,16 +90,16 @@ class EnvController extends Controller
         $grid->key();
         $grid->value();
         $grid->disableExport();
-        $prefix = config('admin.route.prefix');
+        $prefix = $this->prefix();
         $grid->actions(function ($actions) use ($page, $prefix){
             $id = $actions->getKey();
             $actions->disableView();
             $actions->disableDelete();
-            $actions->append("<a href='/{$prefix}/env/{$id}/delete?page={$page}' class='' data-id='{$id}'><i class='fa fa-trash'></i></a>");
+            $actions->append("<a href='{$prefix}/env/{$id}/delete?page={$page}' class='' data-id='{$id}'><i class='fa fa-trash'></i></a>");
         });
         $grid->tools(function($tools) use ($page, $key, $prefix){
             $tools->batch(function ($batch) use ($page, $prefix){
-                $batch->add('删除', new DeleteAll('/'. $prefix .'/env/delete-all', $page));
+                $batch->add('删除', new DeleteAll($prefix .'/env/delete-all', $page));
                 $batch->disableDelete();
             });
             $tools->append(view('env::admin.search', compact('key')));
@@ -150,7 +150,15 @@ class EnvController extends Controller
         return $form;
     }
 
-    public function delete(Request $request, $id){
+    /**
+     * Notes: s删除
+     * Date: 2019/7/8 18:03
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function delete(Request $request, $id)
+    {
         $page = $request->input('page');
 
         if(!EnvModel::isDel($id))
@@ -158,10 +166,17 @@ class EnvController extends Controller
         else
             admin_toastr('操作成功','success');
 
-        return redirect('/admin/env?page='.$page);
+        return redirect($this->prefix().'/env?page='.$page);
     }
 
-    public function deleteAll(Request $request){
+    /**
+     * Notes: 批量删除
+     * Date: 2019/7/8 18:03
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteAll(Request $request)
+    {
         $ids = $request->input('ids');
         $page = $request->input('page');
 
@@ -170,6 +185,20 @@ class EnvController extends Controller
         else
             admin_toastr('操作成功','success');
 
-        return redirect('/admin/env?page='.$page);
+        return redirect($this->prefix().'/env?page='.$page);
+    }
+
+    /**
+     * Notes: 前缀
+     * Date: 2019/7/8 18:12
+     * @return bool|\Illuminate\Config\Repository|mixed
+     */
+    public function prefix()
+    {
+        $prefix = config('admin.route.prefix');
+        if($prefix && !in_array($prefix, ['/', '//']))
+            return str_replace("\\", "/", DIRECTORY_SEPARATOR . $prefix);
+        else
+            return env('APP_URL');
     }
 }
