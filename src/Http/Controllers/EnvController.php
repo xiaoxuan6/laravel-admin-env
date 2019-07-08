@@ -90,15 +90,16 @@ class EnvController extends Controller
         $grid->key();
         $grid->value();
         $grid->disableExport();
-        $grid->actions(function ($actions) use ($page){
+        $prefix = config('admin.route.prefix');
+        $grid->actions(function ($actions) use ($page, $prefix){
             $id = $actions->getKey();
             $actions->disableView();
             $actions->disableDelete();
-            $actions->append("<a href='/admin/env/{$id}/delete?page={$page}' class='' data-id='{$id}'><i class='fa fa-trash'></i></a>");
+            $actions->append("<a href='/{$prefix}/env/{$id}/delete?page={$page}' class='' data-id='{$id}'><i class='fa fa-trash'></i></a>");
         });
-        $grid->tools(function($tools) use ($page, $key){
-            $tools->batch(function ($batch) use ($page){
-                $batch->add('删除', new DeleteAll('/admin/env/delete-all', $page));
+        $grid->tools(function($tools) use ($page, $key, $prefix){
+            $tools->batch(function ($batch) use ($page, $prefix){
+                $batch->add('删除', new DeleteAll('/'. $prefix .'/env/delete-all', $page));
                 $batch->disableDelete();
             });
             $tools->append(view('env::admin.search', compact('key')));
